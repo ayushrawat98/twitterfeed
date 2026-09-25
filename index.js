@@ -20,7 +20,7 @@ if(!fs.existsSync(path.join(__dirname, 'public', 'files'))){
 
 const app = express()
 
-app.use(helmet())
+// app.use(helmet())
 
 app.use('/public', express.static(path.resolve(__dirname, "public"), {maxAge : '1y'}));
 
