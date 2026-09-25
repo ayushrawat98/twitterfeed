@@ -26,7 +26,7 @@
 			{% if "video" in data.mimetype %}
 				<video class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" controls preload="metadata"></video>
 			{% else %}
-				<img class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}">
+				<img class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" loading="lazy">
 			{% endif %}
 		{% endif %}
 
