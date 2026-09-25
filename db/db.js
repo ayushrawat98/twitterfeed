@@ -50,14 +50,14 @@ class DB {
 		)
 		this.queries = {
 			insertThread: this.db.prepare('insert into posts ( parent_id, username, content, file_id, ip, created_at, updated_at) values (?,?,?,?,?,?,?)'),
-			getThreads: this.db.prepare('select t.id, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.parent_id is null group by t.id order by t.created_at desc'),
+			getThreads: this.db.prepare('select t.id, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.parent_id is null group by t.id order by t.updated_at desc'),
 			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
 
 			insertFile : this.db.prepare('insert into files (path, mime_type, created_at) values (?,?,?)'),
 			getFile : this.db.prepare('select * from files where id = ?'),
 			
 			getThreadForPost: this.db.prepare('select t.id, t.content, t.username, t.file_id, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),
-			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, p.file_id, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
+			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, p.file_id, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ? order by p.created_at asc'),
 			insertPost : this.db.prepare('insert into posts (parent_id, username, content, file_id, ip,  created_at) values (?,?,?,?,?,?)'),
 
 			getPostById : this.db.prepare("select * from posts p where id = ?"),
