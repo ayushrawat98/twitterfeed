@@ -1,0 +1,45 @@
+{% macro postList(datalist, board) %}
+	<section class="postList">
+		{% for data in datalist %}
+			{{ post(data, board) }}
+		{% endfor %}
+	</section>
+{% endmacro %}
+
+{% macro post(data, board) %}
+
+	<article class="post" id="{{data.id}}">
+		<header class="post__header">
+			<span>{{data.username}}</span>&nbsp;
+			<span>{{data.created_at | indianDate}}</span>&nbsp;
+			{% if board %}
+			<a href="/thread/{{data.id}}">No. {{data.id}}</a>&nbsp;
+			{% else %}
+			<span>No. {{data.id}}</span>&nbsp;
+			{% endif %}
+		</header>
+		<div class="post__content-wrapper">	
+			<p class="post__content">{{data.content | greenText | safe}}</p>
+		</div>
+
+		{% if data.image_path %}
+			{% if "video" in data.mimetype %}
+				<video class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" controls preload="metadata"></video>
+			{% else %}
+				<img class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}">
+			{% endif %}
+		{% endif %}
+
+		{% if  board %}
+			<footer class="post__footer">
+				<span>{{data.reply_count}} replies</span>
+			</footer>
+		{% endif %}
+
+		{% if not board %}
+				<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
+		{% endif %}
+	</article>
+
+{% endmacro %}
+

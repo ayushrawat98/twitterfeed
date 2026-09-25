@@ -1,0 +1,25 @@
+{% extends "skeleton.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}
+{{datalist[0].title}}
+{% if datalist[0].title %}-{% endif %}
+{{datalist[0].content}}
+{% endblock %}
+
+{% block main %}
+
+{{ macros.postList(datalist) }}
+
+<form enctype="multipart/form-data" style="position : sticky; bottom : 0; z-index : 4; background-color: #121513; border: 1px solid #2d3530; padding: 8px;" class="hidden">
+		<input type="text" id="name" name="name" placeholder="apka shubh naam" maxlength="40"/>
+		<textarea placeholder="aap kya soch rahe ho..." id="content" name="content" required maxlength="280"></textarea>
+		<div class="form__buttons">
+			<input type="file" accept="image/*, video/*" id="file" name="file" />
+			<button type="submit">Send</button>
+		</div>
+</form>
+
+<script src="/public/script.js" defer></script>
+
+{% endblock %}
