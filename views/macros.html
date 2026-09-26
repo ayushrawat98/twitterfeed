@@ -24,9 +24,9 @@
 
 		{% if data.image_path %}
 			{% if "video" in data.mimetype %}
-				<video class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" controls preload="metadata"></video>
+				<video class="post__thumbnail" data-src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" controls preload="metadata"></video>
 			{% else %}
-				<img class="post__thumbnail" src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}" loading="lazy">
+				<img class="post__thumbnail" data-src="/public/files/{{data.image_path | safeFileName}}" alt="{{data.image_path}}">
 			{% endif %}
 		{% endif %}
 
@@ -43,3 +43,18 @@
 
 {% endmacro %}
 
+{% macro form(isFeed) %}
+	{% if isFeed %}
+	<form enctype="multipart/form-data" >
+	{% else %}
+	<form enctype="multipart/form-data" style="position : sticky; bottom : 0; z-index : 4; background-color: #121513; border: 1px solid #2d3530; padding: 8px;" class="hidden">
+	{% endif %}
+		<input type="text" id="name" name="name" placeholder="apka shubh naam" maxlength="40"/>
+		<textarea placeholder="aap kya soch rahe ho..." id="content" name="content" required maxlength="280"></textarea>
+		<div class="form__buttons">
+			<input type="file" accept="image/*, video/*" id="file" name="file" />
+			<button type="submit">Send</button>
+		</div>
+		<span class="form-message"></span>
+	</form>
+{% endmacro %}

@@ -49,4 +49,25 @@ document.querySelector("form").addEventListener("submit", (e) => {
 	fetch(window.location.pathname, { method: "POST", body: formData }).then((res) => {
 		window.location.reload()
 	})
+	//show message to user
+	document.querySelector(".form-message").textContent = "uploading..."
 })
+
+const options = {
+	threshold: 0.0,
+	rootMargin: '200px 0px 200px 0px',
+}
+
+const callback = (entries, observer) => {
+	entries.forEach((entry) => {
+		if (entry.isIntersecting) {
+			if (!entry.target.src) {
+				entry.target.src = entry.target.dataset.src
+			}
+			observer.unobserve(entry.target);
+		}
+	})
+}
+
+const observer = new IntersectionObserver(callback, options)
+document.querySelectorAll(".post__thumbnail").forEach(thumbnail => observer.observe(thumbnail))

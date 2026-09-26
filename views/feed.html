@@ -7,14 +7,7 @@
 
 {% block main %}
 
-	<form enctype="multipart/form-data">
-		<input type="text" id="name" name="name" placeholder="apka shubh naam" maxlength="40"/>
-		<textarea placeholder="aap kya soch rahe ho..." id="content" name="content" required maxlength="280"></textarea>
-		<div class="form__buttons">
-			<input type="file" accept="image/*, video/*" id="file" name="file" />
-			<button type="submit">Send</button>
-		</div>
-	</form>
+	{{ macros.form(true) }}
 
 	{{ macros.postList(datalist, board) }}
 
