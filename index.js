@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import { boardRoute } from './routes.js';
 import helmet from 'helmet';
 import fs from "fs"
+import compression from 'compression';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,8 @@ const app = express()
 // app.use(helmet())
 
 app.use('/public', express.static(path.resolve(__dirname, "public"), {maxAge : '1y'}));
+
+app.use(compression())
 
 const nunjucksEnv = nunjucks.configure('views', {
 	autoescape: true,
