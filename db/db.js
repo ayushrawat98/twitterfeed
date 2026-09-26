@@ -28,18 +28,20 @@ class DB {
 					content TEXT,
 					file_id INTEGER REFERENCES files(id),
 					ip TEXT,
+					ip_hash INTEGER,
+					quote_id INTEGER DEFAULT -1,
 					created_at TEXT,
-					updated_at text
+					updated_at TEXT
 				);
 
 				create table if not exists files (
-					id integer primary key autoincrement,
-					path text not null,
-					mime_type text,
-					size integer,
-  					width integer,
-  					height integer,
-  					created_at text
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					path TEXT NOT NULL,
+					mime_type TEXT,
+					size INTEGER,
+  					width INTEGER,
+  					height INTEGER,
+  					created_at TEXT
 				);
 
 				CREATE INDEX IF NOT EXISTS idx_posts_parent_created
@@ -49,16 +51,17 @@ class DB {
             `
 		)
 		this.queries = {
-			insertThread: this.db.prepare('insert into posts ( parent_id, username, content, file_id, ip, created_at, updated_at) values (?,?,?,?,?,?,?)'),
-			getThreads: this.db.prepare('select t.id, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.parent_id is null group by t.id order by t.updated_at desc'),
-			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
+			insertThread: this.db.prepare('insert into posts (parent_id, username, content, file_id, ip, created_at, updated_at) values (?,?,?,?,?,?,?)'),
+			getThreads: this.db.prepare('select t.id, t.content, t.username, t.ip_hash, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.parent_id is null group by t.id order by t.updated_at desc'),
+			updateThreadTime : this.db.prepare('update posts set updated_at = ? where id = ?'),
+			updateThreadHash : this.db.prepare('update posts set ip_hash = ? where id = ?'),
 
-			insertFile : this.db.prepare('insert into files (path, mime_type, created_at) values (?,?,?)'),
+			insertFile : this.db.prepare('insert into files (path, mime_type,size, created_at) values (?,?,?,?)'),
 			getFile : this.db.prepare('select * from files where id = ?'),
 			
-			getThreadForPost: this.db.prepare('select t.id, t.content, t.username, t.file_id, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),
-			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, p.file_id, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ? order by p.created_at asc'),
-			insertPost : this.db.prepare('insert into posts (parent_id, username, content, file_id, ip,  created_at) values (?,?,?,?,?,?)'),
+			getThreadForPost: this.db.prepare('select t.id, t.content, t.username, t.file_id, t.ip_hash, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),
+			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, p.file_id, p.ip_hash, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ? order by p.created_at asc'),
+			insertPost : this.db.prepare('insert into posts (parent_id, username, content, file_id, ip, ip_hash, created_at) values (?,?,?,?,?,?,?)'),
 
 			getPostById : this.db.prepare("select * from posts p where id = ?"),
 			deletePostById : this.db.prepare("delete from posts where id = ?"),
@@ -84,10 +87,6 @@ class DB {
 		return this.queries.getThreads.all(id)
 	}
 
-	insertFile(obj) {
-		return this.queries.insertFile.run(obj.path, obj.mime_type, obj.created_at)
-	}
-
 	getRecentImages(){
 		return this.queries.recentImages.all()
 	}
@@ -105,11 +104,11 @@ class DB {
 	}
 
 	insertPost(obj){
-		return this.queries.insertPost.run(obj.parent_id, obj.username, obj.content, obj.file_id, obj.ip, obj.created_at)
+		return this.queries.insertPost.run(obj.parent_id, obj.username, obj.content, obj.file_id, obj.ip, obj.ip_hash, obj.created_at)
 	}
 
-	updateThread(date, id){
-		return this.queries.updateThread.run(date, id)
+	updateThreadTime(date, id){
+		return this.queries.updateThreadTime.run(date, id)
 	}
 
 	getRandomFile(){

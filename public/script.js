@@ -44,13 +44,20 @@ pasteTextBox.addEventListener('paste', (event) => {
 });
 
 document.querySelector("form").addEventListener("submit", (e) => {
+	const formMessage = document.querySelector(".form-message")
 	e.preventDefault()
 	const formData = new FormData(e.target)
-	fetch(window.location.pathname, { method: "POST", body: formData }).then((res) => {
-		window.location.reload()
+	fetch(window.location.pathname, { method: "POST", body: formData }).then(res => {
+		if(res.status == 200) {
+			window.location.reload()
+		}else{
+			return res.json()
+		}
+	}).then(res => {
+		formMessage.textContent = res.message
 	})
 	//show message to user
-	document.querySelector(".form-message").textContent = "uploading..."
+	formMessage.textContent = "Uploading please wait ..."
 })
 
 const options = {

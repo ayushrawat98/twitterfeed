@@ -10,7 +10,8 @@
 
 	<article class="post" id="{{data.id}}">
 		<header class="post__header">
-			<span>{{data.username}}</span>&nbsp;
+			<span>{% if data.username %}{{data.username}}{% else %}Anon{% endif %}</span>&nbsp;
+			<span>{{data.ip_hash}}</span>&nbsp;
 			<span>{{data.created_at | indianDate}}</span>&nbsp;
 			{% if board %}
 			<a href="/thread/{{data.id}}">No. {{data.id}}</a>&nbsp;

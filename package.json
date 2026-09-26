@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@node-rs/xxhash": "^1.7.8",
     "better-sqlite3": "^11.0.0",
     "compression": "^1.8.2",
     "express": "^5.2.1",
