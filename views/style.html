@@ -46,7 +46,7 @@
 		border-radius: 4px;
 		color: var(--text);
 		background-color: var(--cardBackground);
-		border : 1px solid var(--cardBorder);
+		border: 1px solid var(--cardBorder);
 		padding: 0.5rem;
 	}
 
@@ -61,9 +61,9 @@
 		margin: 0.5rem 0;
 		color: var(--text);
 		background-color: var(--cardBackground);
-		border : 1px solid var(--cardBorder);
+		border: 1px solid var(--cardBorder);
 		scrollbar-color: var(--text) transparent;
-    	scrollbar-width: thin;
+		scrollbar-width: thin;
 	}
 
 	a {
@@ -76,7 +76,8 @@
 		font-family: inherit;
 	}
 
-	input[type="file"]::file-selector-button, button {
+	input[type="file"]::file-selector-button,
+	button {
 		background-color: var(--cardBorder);
 		color: var(--text);
 		border: 1px solid var(--meta);
@@ -85,13 +86,15 @@
 		cursor: pointer;
 	}
 
-	input[type="file"]::file-selector-button:hover, button:hover {
+	input[type="file"]::file-selector-button:hover,
+	button:hover {
 		background-color: var(--meta);
 		color: var(--background);
 		/* Flips contrast on hover */
 	}
 
-	image, video {
+	image,
+	video {
 		border-radius: 4px;
 	}
 
@@ -133,8 +136,10 @@
 
 	.post__thumbnail {
 		width: 100%;
-		height: 30vh;
+		aspect-ratio: 16/9;
+		height: auto;
 		object-fit: contain;
+		display: block;
 	}
 
 	.post__content-wrapper {
