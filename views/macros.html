@@ -1,9 +1,7 @@
 {% macro postList(datalist, board) %}
-	<section class="postList">
 		{% for data in datalist %}
 			{{ post(data, board) }}
 		{% endfor %}
-	</section>
 {% endmacro %}
 
 {% macro post(data, board) %}

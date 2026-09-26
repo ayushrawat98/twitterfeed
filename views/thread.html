@@ -9,9 +9,11 @@
 
 {% block main %}
 
-{{ macros.postList(datalist) }}
+<section class="postList">
+	{{ macros.postList(datalist) }}
 
-{{ macros.form(false) }}
+	{{ macros.form(false) }}
+</section>
 
 <script src="/public/script.js" defer></script>
 
